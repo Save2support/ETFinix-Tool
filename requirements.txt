@@ -13,4 +13,4 @@ capstone
 unicorn
 keystone
 fusepy
-
+customtkinter
