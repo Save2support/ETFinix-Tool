@@ -1,7 +1,7 @@
 name: Build ETFinix EXE
 
 on:
-  workflow_dispatch: # এটি আপনাকে ম্যানুয়ালি রান করার সুযোগ দেবে
+  workflow_dispatch: # ম্যানুয়ালি রান করার জন্য
 
 jobs:
   build:
@@ -11,24 +11,27 @@ jobs:
     - name: Checkout code
       uses: actions/checkout@v4
       with:
-        submodules: recursive # mtkclient এর জন্য প্রয়োজন হতে পারে
+        submodules: recursive 
 
     - name: Set up Python
-      uses: actions/setup-python@v4
+      uses: actions/setup-python@v5 # v5 ব্যবহার করা লেটেস্ট স্ট্যান্ডার্ড
       with:
         python-version: '3.9'
 
     - name: Install dependencies
       run: |
         python -m pip install --upgrade pip
-        pip install -r requirements.txt
+        pip install pyinstaller # PyInstaller আলাদাভাবে ইন্সটল করা নিশ্চিত করুন
+        if (Test-Path requirements.txt) { pip install -r requirements.txt }
 
     - name: Build EXE with PyInstaller
       run: |
-        pyinstaller --noconsole --onefile --name ETFinix ETFinix.py
+        # আপনার প্রজেক্টে mtk.py এবং অন্যান্য ডিপেন্ডেন্সি থাকায় PyInstaller কে সেগুলো চিনিয়ে দেওয়া প্রয়োজন
+        pyinstaller --noconsole --onefile --name ETFinix --collect-all mtk ETFinix.py
+        # যদি mtk একটি ফোল্ডার হয় তবে --collect-all ব্যবহার করা নিরাপদ
 
     - name: Upload Artifact
-      uses: actions/upload-artifact@v4
+      uses: actions/upload-artifact@v4 # এটি v4 ই থাকবে
       with:
         name: ETFinix-Tool-Windows
         path: dist/ETFinix.exe
