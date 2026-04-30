@@ -9,7 +9,7 @@ jobs:
 
     steps:
     - name: Checkout code
-      uses: actions/checkout@v3
+      uses: actions/checkout@v4
       with:
         submodules: recursive # mtkclient এর জন্য প্রয়োজন হতে পারে
 
@@ -28,7 +28,7 @@ jobs:
         pyinstaller --noconsole --onefile --name ETFinix ETFinix.py
 
     - name: Upload Artifact
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v4
       with:
         name: ETFinix-Tool-Windows
         path: dist/ETFinix.exe
